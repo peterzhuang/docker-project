@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
     const API_BASE_ADDRESS = `http://${API_URL}:${API_PORT}`;
     console.log('Request on address ', API_BASE_ADDRESS);
     const fetchData = async () => {
-      const result = await axios(`${API_BASE_ADDRESS}/test`);
+      const result = await axios(`${API_BASE_ADDRESS}/api/test`);
       setResponse(result.data);
     };
 
@@ -29,14 +28,15 @@ function App() {
       const API_PORT = process.env.REACT_APP_API_PORT || '3001';
       const API_BASE_ADDRESS = `http://${API_URL}:${API_PORT}`;
       try {
-      const result = await axios(`${API_BASE_ADDRESS}/healthcheck`);
+      const result = await axios(`${API_BASE_ADDRESS}/api/healthcheck`);
       console.log(`result: ${JSON.stringify(result)}`);
       setMongoHealth(result.data.status);
       } catch (err) {
         setMongoHealth('fail');
       }
     };
-    const checkStatusTimer = setInterval( () => checkHealth(), 5000);
+    checkHealth();
+    const checkStatusTimer = setInterval( () => checkHealth(), 10000);
     
     return () => {
       clearInterval(checkStatusTimer);
